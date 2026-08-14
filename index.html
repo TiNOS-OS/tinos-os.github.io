@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TiNOS · OS in Python</title>
+  <!-- Font Awesome (легкие иконки) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    /* Обнуление и базовые стили — легко, воздушно */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f8faff 0%, #edf2f9 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      color: #1a2639;
+    }
+
+    /* главный контейнер — мягкая карточка */
+    .container {
+      max-width: 780px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 48px;
+      padding: 2.8rem 2.2rem 2.2rem;
+      box-shadow: 0 20px 40px -12px rgba(0, 20, 40, 0.20),
+                  0 8px 24px -6px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 4.2rem;
+      font-weight: 600;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #1e2b3c, #2c3f5c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.25rem;
+      display: inline-block;
+    }
+
+    .container p {
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: #3e4e62;
+      background: rgba(230, 240, 255, 0.5);
+      display: inline-block;
+      padding: 0.2rem 1.8rem;
+      border-radius: 60px;
+      backdrop-filter: blur(2px);
+      letter-spacing: 0.3px;
+      margin-top: 0.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    /* картинка — мягкая, с тенью и скруглением */
+    img {
+      margin-top: 2rem;
+      max-width: 100%;
+      height: auto;
+      width: 500px;
+      border-radius: 28px;
+      box-shadow: 0 16px 32px -8px rgba(0, 20, 30, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      transition: transform 0.25s ease, box-shadow 0.25s;
+    }
+
+    img:hover {
+      transform: scale(1.01);
+      box-shadow: 0 24px 40px -12px rgba(0, 40, 60, 0.25);
+    }
+
+    /* блок GitHub — легкий, прозрачный */
+    .github {
+      margin-top: 2rem;
+      padding: 0.6rem 1.8rem;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 80px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
+      transition: 0.2s;
+      display: inline-block;
+    }
+
+    .github:hover {
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 8px 18px rgba(0, 20, 40, 0.08);
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      color: #1a2b3c;
+    }
+
+    .title i {
+      font-size: 1.8rem;
+      color: #24292e;
+      opacity: 0.9;
+    }
+
+    .title p {
+      font-size: 1.25rem;
+      font-weight: 460;
+      letter-spacing: -0.2px;
+      color: #1a2639;
+      margin: 0;
+    }
+
+    /* блок загрузки — чистый, акцентный */
+    .download {
+      margin-top: 2.2rem;
+      padding: 1.5rem 2rem 2rem;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 8px 20px -8px rgba(0, 20, 30, 0.06);
+    }
+
+    .download h1 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      color: #1f3348;
+      letter-spacing: -0.3px;
+      margin-bottom: 1rem;
+      display: block;
+      text-align: center;
+    }
+
+    .download button {
+      background: #1f2c3f;
+      border: none;
+      padding: 0.9rem 2.2rem;
+      border-radius: 60px;
+      box-shadow: 0 8px 20px -6px rgba(20, 40, 70, 0.25);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .download button:hover {
+      background: #2a3b54;
+      transform: scale(1.02);
+      box-shadow: 0 12px 28px -8px #1a2a3e60;
+    }
+
+    .download button a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      color: white;
+      text-decoration: none;
+      font-size: 1.25rem;
+      font-weight: 460;
+      letter-spacing: 0.3px;
+    }
+
+    .download button a i {
+      font-size: 1.6rem;
+      color: #b0d0ff;
+      transition: 0.2s;
+    }
+
+    .download button:hover a i {
+      color: white;
+    }
+
+    /* маленькая адаптивность */
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.8rem 1.2rem;
+      }
+      h1 {
+        font-size: 3.2rem;
+      }
+      .container p {
+        font-size: 1rem;
+        padding: 0.2rem 1.2rem;
+      }
+      img {
+        width: 100%;
+        max-width: 360px;
+      }
+      .download {
+        padding: 1.2rem 1rem;
+      }
+      .download h1 {
+        font-size: 1.3rem;
+      }
+      .download button a {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .title p {
+        font-size: 1rem;
+      }
+      .title i {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* небольшой «воздушный» футер (необязательно) */
+    .footnote {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #6a7e96;
+      opacity: 0.6;
+      letter-spacing: 0.5px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TiNOS</h1>
+    <p>Operating system in Python</p>
+  </div>
+
+  <!-- картинка с мягким эффектом -->
+  <img src="assets/wallpaper.png" alt="TiNOS wallpaper" width="500">
+
+  <!-- GitHub — лёгкий, прозрачный блок -->
+  <div class="github">
+    <a href="github.com/tinysh-tinos/tinos">
+    <div class="title">
+      <i class="fa-brands fa-github"></i>
+      <p>TiNOS on GitHub</p>
+    </div></a>
+  </div>
+
+  <!-- секция загрузки с кнопкой -->
+  <div class="download">
+    <h1>Download from site</h1>
+    <button>
+      <a href="дворец-декора.рф/projects/tinos/setup.py">
+        <i class="fa-brands fa-windows"></i> Download
+      </a>
+    </button>
+  </div>
+
+  <!-- маленькая подпись (для лёгкости) -->
+  <div class="footnote">
+    <i class="fa-regular fa-star" style="margin-right: 4px;"></i> python · lightweight · open
+  </div>
+</body>
+</html>
